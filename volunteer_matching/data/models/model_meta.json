@@ -1,0 +1,29 @@
+{
+  "model_name": "Logistic Regression",
+  "features": [
+    "skill_overlap_score",
+    "availability_match",
+    "location_match",
+    "interest_match",
+    "experience_match",
+    "mode_match"
+  ],
+  "metrics": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "confusion_matrix": [
+      [
+        10,
+        0
+      ],
+      [
+        0,
+        113
+      ]
+    ],
+    "cv_f1_mean": 0.9991,
+    "cv_f1_std": 0.0018
+  }
+}
