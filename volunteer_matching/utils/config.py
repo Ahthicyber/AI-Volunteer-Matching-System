@@ -92,13 +92,15 @@ def get_groq_api_key() -> str | None:
 
 
 def get_tesseract_cmd() -> str | None:
-    """Return optional Tesseract executable path for local OCR.
-
-    On Windows, pytesseract often needs the explicit path to
-    tesseract.exe. The app first checks Streamlit secrets, then .env, then
-    common Windows install locations. Missing values return None so OCR can
-    fail gracefully instead of crashing.
     """
+    Return optional Tesseract executable path.
+
+    On Windows, pytesseract may need the full tesseract.exe path.
+    On Streamlit Cloud/Linux, Tesseract is normally available as the
+    command 'tesseract', so we check that using shutil.which().
+    """
+    import shutil
+
     candidates: list[str] = []
 
     secret_value = _get_streamlit_secret("TESSERACT_CMD")
@@ -110,14 +112,18 @@ def get_tesseract_cmd() -> str | None:
         candidates.append(env_value)
 
     candidates.extend([
-        r"C:\\Program Files\\Tesseract-OCR\\tesseract.exe",
-        r"C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe",
+        r"C:\Program Files\Tesseract-OCR\tesseract.exe",
+        r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe",
     ])
 
     for candidate in candidates:
         path = Path(candidate)
         if path.exists():
             return str(path)
+
+    linux_cmd = shutil.which("tesseract")
+    if linux_cmd:
+        return linux_cmd
 
     return None
 
