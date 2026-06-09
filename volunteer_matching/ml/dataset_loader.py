@@ -23,6 +23,8 @@ REQUIRED_COLUMNS = [
 
 
 def load_dataset() -> pd.DataFrame | None:
+    print("DATASET PATH:", _DATASET_PATH)
+    print("EXISTS:", _DATASET_PATH.exists())
     """
     Load the cleaned volunteer dataset from the Excel file.
     Returns DataFrame or None if file is missing.
@@ -35,8 +37,11 @@ def load_dataset() -> pd.DataFrame | None:
         logger.info("Dataset loaded: %d rows × %d cols", *df.shape)
         return df
     except Exception as exc:
-        logger.error("Dataset load failed: %s", exc)
-        return None
+        import traceback
+    print("\n========== DATASET ERROR ==========")
+    traceback.print_exc()
+    print("===================================\n")
+    raise
 
 
 def validate_dataset(df: pd.DataFrame) -> dict:

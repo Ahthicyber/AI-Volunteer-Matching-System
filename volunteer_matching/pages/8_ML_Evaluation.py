@@ -99,13 +99,13 @@ else:
 st.markdown("<div class='vm-divider'></div>", unsafe_allow_html=True)
 
 # ── Load dataset ──────────────────────────────────────────────────────────────
+from ml.dataset_loader import load_dataset, _DATASET_PATH
+
 df_raw = load_dataset()
 
 if df_raw is None:
-    st.error(
-        "❌ Dataset file not found at `data/dataset/volunteer_dataset_cleaned_audit.xlsx`.  \n"
-        "Please ensure the dataset is placed in the correct directory."
-    )
+    st.error(f"Dataset not found.")
+    st.code(f"Expected location:\n{_DATASET_PATH}")
     st.stop()
 
 tabs = st.tabs([
