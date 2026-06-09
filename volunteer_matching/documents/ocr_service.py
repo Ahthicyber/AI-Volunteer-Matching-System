@@ -12,7 +12,7 @@ from __future__ import annotations
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from documents.document_utils import clean_extracted_text, detect_file_type, truncate_text
+from documents.document_utils import clean_extracted_text, detect_file_type
 from utils.config import get_tesseract_cmd
 
 
@@ -41,7 +41,16 @@ def extract_text_from_image(file_path: str) -> tuple[bool, str]:
 
         from PIL import Image
         import pytesseract
+
         _configure_tesseract(pytesseract)
+
+        # Temporary debug for Streamlit Cloud
+        try:
+            import streamlit as st
+            st.write("Tesseract CMD:", getattr(pytesseract.pytesseract, "tesseract_cmd", "default"))
+            st.write("Tesseract Version:", pytesseract.get_tesseract_version())
+        except Exception as debug_error:
+            return False, f"Tesseract debug failed: {debug_error}"
 
         with Image.open(path) as image:
             text = pytesseract.image_to_string(image)
@@ -50,6 +59,7 @@ def extract_text_from_image(file_path: str) -> tuple[bool, str]:
         if not cleaned:
             return False, "OCR completed but no readable text was found."
         return True, cleaned
+
     except ImportError:
         return False, "OCR Python libraries are not installed. Run: pip install pytesseract pillow"
     except Exception as exc:
