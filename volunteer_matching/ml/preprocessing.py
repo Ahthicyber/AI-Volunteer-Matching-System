@@ -270,7 +270,7 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     # Use synthetic score threshold instead
     df["match_label"] = (
     df["synthetic_score"] + np.random.normal(0, 0.08, len(df))
-    >= 0.75
+    >= 0.68
     ).astype(int)
 
     return df
