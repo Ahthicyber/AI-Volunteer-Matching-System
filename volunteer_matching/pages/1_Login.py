@@ -2,7 +2,7 @@
 pages/1_Login.py
 Stable login/register page with home-screen preselection support.
 """
-from __future__ import annotations
+from db.schema import initialize_database
 
 import streamlit as st
 
@@ -21,6 +21,9 @@ from utils.session import (
 
 st.set_page_config(page_title="Login · VolunteerAI", page_icon="🔑", layout="centered")
 apply_global_styles()
+
+initialize_database()
+
 init_session()
 restore_session_from_token()
 ensure_demo_accounts()
