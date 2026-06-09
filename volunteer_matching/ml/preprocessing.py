@@ -267,8 +267,11 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
 
     # Clip to [0,1] range (floating point safety)
     df["synthetic_score"] = df["synthetic_score"].clip(0.0, 1.0)
-    # Binary label: 1 = good match
-    df["match_label"] = df.apply(_synthesize_label, axis=1)
+    # Use synthetic score threshold instead
+    df["match_label"] = (
+    df["synthetic_score"] + np.random.normal(0, 0.08, len(df))
+    >= 0.75
+    ).astype(int)
 
     return df
 
