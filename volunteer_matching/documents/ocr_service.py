@@ -17,7 +17,7 @@ from utils.config import get_tesseract_cmd
 
 
 def _configure_tesseract(pytesseract_module) -> None:
-    """Configure pytesseract with an explicit executable path when available."""
+    """Configure pytesseract with explicit executable path when available."""
     cmd = get_tesseract_cmd()
     if cmd:
         pytesseract_module.pytesseract.tesseract_cmd = cmd
@@ -25,7 +25,9 @@ def _configure_tesseract(pytesseract_module) -> None:
 
 def _tesseract_missing_message() -> str:
     return (
-        "Tesseract OCR is not installed or not configured. On Windows, install Tesseract OCR and add "
+        "Tesseract OCR is not available on this server. "
+        "For Streamlit Cloud, make sure packages.txt contains: tesseract-ocr, tesseract-ocr-eng, poppler-utils. "
+        "For local Windows, install Tesseract OCR and add "
         "TESSERACT_CMD=C:\\Program Files\\Tesseract-OCR\\tesseract.exe to your .env, then restart Streamlit."
     )
 
