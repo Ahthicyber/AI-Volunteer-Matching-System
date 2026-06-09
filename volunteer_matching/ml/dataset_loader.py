@@ -23,25 +23,25 @@ REQUIRED_COLUMNS = [
 
 
 def load_dataset() -> pd.DataFrame | None:
-    print("DATASET PATH:", _DATASET_PATH)
-    print("EXISTS:", _DATASET_PATH.exists())
     """
     Load the cleaned volunteer dataset from the Excel file.
-    Returns DataFrame or None if file is missing.
+    Returns DataFrame or None if file is missing or cannot be loaded.
     """
+    print("DATASET PATH:", _DATASET_PATH)
+    print("EXISTS:", _DATASET_PATH.exists())
+
     if not _DATASET_PATH.exists():
         logger.warning("Dataset not found at %s", _DATASET_PATH)
         return None
+
     try:
         df = pd.read_excel(str(_DATASET_PATH), sheet_name=_SHEET_NAME)
         logger.info("Dataset loaded: %d rows × %d cols", *df.shape)
         return df
+
     except Exception as exc:
-        import traceback
-    print("\n========== DATASET ERROR ==========")
-    traceback.print_exc()
-    print("===================================\n")
-    raise
+        logger.error("Dataset load failed: %s", exc)
+        return None
 
 
 def validate_dataset(df: pd.DataFrame) -> dict:
